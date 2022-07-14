@@ -1,69 +1,43 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { AddTaskButton } from '../../components/addTask/addTask.component';
 
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
-import BackgroundImage from '../../components/bg-image/bg-image.component'
-import Button from '../../components/button/button.component'
-import Calendar from '../../components/calendar/calendar.component'
-import CreateTask from '../../components/createtask/createtask.component'
-import CustomText from '../../components/text/text.component'
-const { width, height } = Dimensions.get('window')
+import { BackgroundImage } from '../../components/bg-image/bg-image.component';
+
+import Calendar from '../../components/calendar/calendar.component';
+import CreateTask from '../../components/createtask/createtask.component';
 
 const Home = () => {
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
 
   return (
     <View style={styles.container}>
-      <CustomText
+      <Text
         style={{
           fontSize: 18,
           marginHorizontal: 10,
           marginHorizontal: 25,
-          color: '#707070'
+          color: '#707070',
         }}
-        text={'A clean slate!'}
-      />
-      <CustomText
-        style={{ fontSize: 25, marginHorizontal: 25, color: '#707070' }}
-        text={`Let's find something todo...`}
-      />
+      >
+        A clean slate!
+      </Text>
+      <Text style={{ fontSize: 25, marginHorizontal: 25, color: '#707070' }}>
+        Let's find something todo...
+      </Text>
       <Calendar />
       <BackgroundImage />
       <CreateTask modal={modal} setModal={setModal} />
-      <Button style={styles.button}>
-        <Pressable onPress={() => setModal(!modal)}>
-          <Image
-            source={require('../../assets/addtask-icon.png')}
-            style={styles.image}
-          />
-        </Pressable>
-      </Button>
+      <AddTaskButton setModal={setModal} modal={modal} />
     </View>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40
+    marginTop: 60,
   },
-
-  button: {
-    height: height / 8,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: 10
-  },
-  image: {
-    width: 100,
-    height: 100
-  }
-})
+});

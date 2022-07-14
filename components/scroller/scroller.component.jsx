@@ -1,112 +1,61 @@
-import { useState } from 'react'
-import { Dimensions, ScrollView, Text, View } from 'react-native'
+import { forwardRef, useState } from 'react';
+import { Dimensions, ScrollView, View, Text, StyleSheet } from 'react-native';
+import { HOURS } from '../../data';
 
-const SAMPLE_ARRAY = Array(50).fill(1)
-const { width, height } = Dimensions.get('window')
+const { height } = Dimensions.get('window');
 
-const ITEM_HEIGHT = 100
-const ITEM_WIDTH = 200
-const Scroller = ({ lists = SAMPLE_ARRAY }) => {
-  const [selectedItemState, setSelectedItemState] = useState(0)
+let itemHeight = 100;
 
-  return (
-    <View
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 850,
-        marginTop: 50,
-        borderRadius: 50
-        // marginHorizontal: 30
-      }}
-    >
-      <View
-        style={{
-          height: ITEM_HEIGHT,
-          overflow: 'visible',
-          marginTop: 50
-        }}
-      >
+const ListItem = ({ item, style }) => (
+  <View style={style}>
+    <Text style={styles.listText}>{item}</Text>
+  </View>
+);
+
+export const Scroller = forwardRef(
+  ({ items, onChange = (val) => console.log(val), setItemIndex }, ref) => {
+    const { container, list, scrollView } = styles;
+
+    return (
+      <View style={container}>
         <ScrollView
-          onScroll={e => {
-            const currentIndex = Math.round(
-              e.nativeEvent.contentOffset.y / ITEM_HEIGHT
-            )
-
-            console.log({ currentIndex })
-
-            setSelectedItemState(currentIndex)
-            // onScroll({ index: currentIndex, list: list[currentIndex] })
-          }}
-          onMomentumScrollBegin={e => {
-            const currentIndex = e.nativeEvent.contentOffset.y / ITEM_HEIGHT
-            if (selectedItemState) {
-              setSelectedItemState(currentIndex)
-            }
-          }}
-          // onMomentumScrollEnd={e => {
-          //   const currentIndex = e.nativeEvent.contentOffset.y / ITEM_HEIGHT
-          //   console.log({ currentIndex })
-          //   if (currentIndex >= 0 && currentIndex < list.length - 3 * 2) {
-          //     setSelectedItemState(currentIndex)
-          //   }
-
-          //   // onChange(list[currentIndex])
-          // }}
-          // onScrollBeginDrag={e => {
-          //   const currentIndex = e.nativeEvent.contentOffset.y / ITEM_HEIGHT
-          //   if (currentIndex >= 0 && currentIndex < list.length - 3 * 2) {
-          //     setSelectedItemState(currentIndex)
-          //   }
-          // }}
-          // onScrollEndDrag={e => {
-          //   const currentIndex = e.nativeEvent.contentOffset.y / ITEM_HEIGHT
-          //   if (currentIndex >= 0 && currentIndex < list.length - 3 * 2) {
-          //     setSelectedItemState(currentIndex)
-          //   }
-          // }}
+          ref={ref}
           showsVerticalScrollIndicator={false}
-          // pagingEnabled
-          style={{
-            height: ITEM_HEIGHT,
-            width: ITEM_WIDTH,
-            overflow: 'visible'
+          snapToInterval={itemHeight}
+          bounces={false}
+          decelerationRate="fast"
+          onMomentumScrollEnd={(e) => {
+            const currentIndex = Math.round(e.nativeEvent.contentOffset.y / itemHeight);
+            setItemIndex(items[currentIndex]);
+            // onChange(items[currentIndex]);
           }}
-          contentContainerStyle={{
-            borderColor: 'blue'
-          }}
-          // snapToInterval={ITEM_HEIGHT}
-          stickyHeaderIndices={selectedItemState}
+          contentContainerStyle={scrollView}
+          // style={{ borderWidth: 1 }}
         >
-          {lists.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  height: ITEM_HEIGHT,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text style={{ fontSize: 58 }} size={30}>
-                  {item}
-                </Text>
-              </View>
-            )
-          })}
+          {items.map((item, index) => (
+            <ListItem key={index} item={item} style={list} />
+          ))}
         </ScrollView>
-        <View
-          pointerEvents='none'
-          style={{
-            position: 'absolute',
-            // borderWidth: 1,
-            width: '100%',
-            height: '100%'
-          }}
-        />
       </View>
-    </View>
-  )
-}
+    );
+  }
+);
 
-export default Scroller
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollView: {
+    paddingTop: height / 6 - itemHeight / 6,
+    paddingBottom: height / 3.5 - itemHeight / 3.5,
+    paddingHorizontal: 20,
+  },
+  list: {
+    height: itemHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listText: { fontSize: 43, color: '#909cc6', fontWeight: '500' },
+});

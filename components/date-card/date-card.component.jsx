@@ -1,23 +1,21 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import CustomText from '../text/text.component'
-import VerticalLine from '../vertical-line/vertical-line.component'
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
 
 const DateCard = ({ dates }) => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <CustomText style={styles.day} text={dates.day} />
-        <CustomText style={styles.month} text={dates.month} />
-        <VerticalLine />
-        <CustomText style={styles.weekday} text={dates.weekday} />
+        <Text style={styles.day}>{dates.day}</Text>
+        <Text style={styles.month}>{dates.month}</Text>
+        <Image source={require('../../assets/v-line.png')} style={{ height: 27 }} />
+        <Text style={styles.weekday}>{dates.weekday}</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default DateCard
+export default DateCard;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,25 +29,25 @@ const styles = StyleSheet.create({
     opacity: 0.68,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   content: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   day: {
     fontSize: 25,
-    fontWeight: '400'
+    fontWeight: '400',
   },
   month: {
     fontSize: 16,
     textTransform: 'uppercase',
     fontWeight: '400',
-    lineHeight: 27
+    lineHeight: 27,
   },
   weekday: {
     fontSize: 16,
     fontWeight: '400',
-    lineHeight: 27
-  }
-})
+    lineHeight: 27,
+  },
+});
