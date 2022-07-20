@@ -1,16 +1,16 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
-export const TimeItem = ({ hours, minutes }) => {
+export const TimeItem = ({ hour, mins }) => {
   const { container, title, textContainer, text, image } = styles;
 
   return (
     <View style={container}>
       <Text style={title}>Duration</Text>
       <View style={textContainer}>
-        <Text style={text}>{hours}</Text>
+        <Text style={text}>{hour}</Text>
         <Image source={require('../../assets/dot.png')} style={image} />
-        <Text style={text}>{minutes}</Text>
+        <Text style={text}>{mins}</Text>
       </View>
     </View>
   );
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#909CC6',
     borderWidth: 2,
-    width: 200,
+    width: '70%',
     height: 120,
     borderRadius: 30,
     justifyContent: 'center',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 40,
+    fontSize: 58,
     color: '#909CC6',
   },
   image: {

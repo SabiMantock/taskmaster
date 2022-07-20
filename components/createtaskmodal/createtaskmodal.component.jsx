@@ -3,7 +3,6 @@ import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-nati
 import { HOURS, MINUTES } from '../../data';
 
 import TimePicker from '../time-picker/time-picker.component';
-import { TimeItem } from '../time-item/time-item.component';
 
 import { InputForm } from '../input-form/input-form.component';
 
@@ -13,13 +12,43 @@ import { TaskButtons } from '../task-buttons/task-buttons.component';
 
 const { width, height } = Dimensions.get('window');
 
-const CreateTask = ({ modal, setModal }) => {
+const CreateTaskModal = ({ modal, setModal, addTask }) => {
+  const { container, modalContainer, modalText } = styles;
   const [note, setNote] = useState(false);
   const [scroller, setScroller] = useState(false);
-  const [hours, setHours] = useState('00');
+  const [hour, setHour] = useState('00');
   const [mins, setMins] = useState('00');
+  const [hoursIndex, setHoursIndex] = useState(0);
+  const [minsIndex, setMinsIndex] = useState(0);
+  const [title, setTitle] = useState('');
+  const [noteText, setNoteText] = useState('');
 
-  const { container, modalContainer, modalText, timeContainer } = styles;
+  const onChange = (val) => console.warn(val);
+
+  const handleHoursChange = (val) => {
+    setHoursIndex(val);
+
+    onChange({
+      hour: val,
+      min: minsIndex,
+    });
+  };
+
+  const handleMinsChange = (val) => {
+    setMinsIndex(val);
+
+    onChange({
+      hour: hoursIndex,
+      min: val,
+    });
+  };
+
+  const setDuration = () => {
+    setHour(hoursIndex);
+    setMins(minsIndex);
+
+    setScroller(false);
+  };
 
   const onOpen = () => {
     setNote(!note);
@@ -42,24 +71,37 @@ const CreateTask = ({ modal, setModal }) => {
     >
       <View style={modalContainer}>
         <Text style={modalText}>Create task</Text>
-        <InputForm note={note} onOpen={onOpen} />
+        <InputForm
+          note={note}
+          onOpen={onOpen}
+          hour={hour}
+          mins={mins}
+          scroller={scroller}
+          setScroller={setScroller}
+          setNoteText={setNoteText}
+          setTitle={setTitle}
+        />
         <TimePicker
           scroller={scroller}
           setScroller={setScroller}
-          setHours={setHours}
-          setMins={setMins}
+          handleHoursChange={handleHoursChange}
+          handleMinsChange={handleMinsChange}
+          setDuration={setDuration}
         />
-
-        <Pressable
-          onPress={() => {
-            setScroller(!scroller);
-          }}
-          style={timeContainer}
-        >
-          <TimeItem hours={hours} minutes={mins} />
-        </Pressable>
       </View>
-      <TaskButtons />
+      <TaskButtons
+        hour={hour}
+        mins={mins}
+        title={title}
+        noteText={noteText}
+        addTask={addTask}
+        setNote={setNote}
+        setModal={setModal}
+        setNoteText={setNoteText}
+        setTitle={setTitle}
+        setHour={setHour}
+        setMins={setMins}
+      />
     </Modal>
   );
 };
@@ -76,12 +118,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 35,
     width: width,
-    height: height / 2,
+    height: height / 1.9,
     marginBottom: 10,
     position: 'absolute',
     zIndex: 1,
-    bottom: 80,
-    borderRadius: 60,
+    bottom: 70,
+    borderRadius: 40,
   },
   modalText: {
     textTransform: 'uppercase',
@@ -90,10 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#01D9F7',
   },
-  timeContainer: {
-    alignItems: 'center',
-    marginTop: 26,
-  },
 });
 
-export default CreateTask;
+export default CreateTaskModal;

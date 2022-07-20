@@ -1,38 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
+import { View } from 'react-native';
 import Modal from 'react-native-modal';
-
-import { DoubleScroller } from '../double-scroller/double-scroller.component';
+import { HOURS, MINUTES } from '../../data';
 import { ModalTitleText } from '../modal-titleText/modal-titleText.component';
 import { TimeText } from '../time-text/time-text.component';
+import { DoubleScroller } from '../double-scroller/double-scroller.component';
 import { SetDurationButton } from '../set-duration/set-duration.component';
 
-const TimePicker = ({ setScroller, scroller, setHours, setMins }) => {
-  const [hoursIndex, setHoursIndex] = useState(0);
-  const [minsIndex, setMinsIndex] = useState(0);
-
-  const hoursRef = useRef();
-  const minsRef = useRef();
-
-  const setDuration = () => {
-    setHours(hoursIndex);
-    setMins(minsIndex);
-    setScroller(!scroller);
-  };
-
-  const scrollToHoursIndex = (index) => {
-    hoursRef.current?.scrollTo({ x: 0, y: index, animated: false });
-  };
-
-  const scrollToMinsIndex = (index) => {
-    minsRef.current?.scrollTo({ x: 0, y: index, animated: false });
-  };
-
-  useEffect(() => {
-    scrollToHoursIndex(hoursIndex);
-    scrollToMinsIndex(minsIndex);
-  }, []);
-
+const TimePicker = ({
+  setScroller,
+  scroller,
+  handleMinsChange,
+  handleHoursChange,
+  setDuration,
+}) => {
   return (
     <Modal
       isVisible={scroller}
@@ -59,10 +40,8 @@ const TimePicker = ({ setScroller, scroller, setHours, setMins }) => {
         <ModalTitleText />
         <TimeText />
         <DoubleScroller
-          hoursRef={hoursRef}
-          minsRef={minsRef}
-          setHoursIndex={setHoursIndex}
-          setMinsIndex={setMinsIndex}
+          hoursChangeHandler={handleHoursChange}
+          minsChangeHandler={handleMinsChange}
         />
         <SetDurationButton setDuration={setDuration} />
       </View>

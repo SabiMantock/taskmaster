@@ -1,13 +1,42 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export const TaskButtons = () => {
+export const TaskButtons = ({
+  addTask,
+  hour,
+  mins,
+  title,
+  noteText,
+  setModal,
+  setNote,
+  setTitle,
+  setNoteText,
+  setMins,
+  setHour,
+}) => {
   const { buttonContainer, delBtnTxt, addBtnTxt, delBtn, addBtn } = styles;
   return (
     <View style={buttonContainer}>
-      <Pressable style={delBtn}>
+      <Pressable
+        style={delBtn}
+        onPress={() => {
+          setNote(false);
+          setModal(false);
+        }}
+      >
         <Text style={delBtnTxt}>Delete</Text>
       </Pressable>
-      <Pressable style={addBtn}>
+      <Pressable
+        style={addBtn}
+        onPress={() => {
+          addTask(title, noteText, hour, mins);
+          setTitle('');
+          setNoteText('');
+          setHour('00');
+          setMins('00');
+          setNote(false);
+          setModal(false);
+        }}
+      >
         <Text style={addBtnTxt}>Add Task</Text>
       </Pressable>
     </View>

@@ -24,7 +24,7 @@ const Calendar = () => {
       </Text>
       <View style={styles.dateCardContainer}>
         {dates.map((date, index) => (
-          <DateCard key={index} dates={date} />
+          <DateCard key={index} dates={date} index={index} />
         ))}
       </View>
     </View>

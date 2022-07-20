@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { HOURS, MINUTES } from '../../data';
 
@@ -7,14 +7,18 @@ import { Scroller } from '../scroller/scroller.component';
 const { height } = Dimensions.get('window');
 const itemHeight = 100;
 
-export const DoubleScroller = ({ hoursRef, minsRef, setHoursIndex, setMinsIndex }) => {
+export const DoubleScroller = ({
+  hoursChangeHandler = (val) => console.warn({ val }),
+  minsChangeHandler = (val) => console.warn({ val }),
+}) => {
   const { container, image, picker } = styles;
+
   return (
     <View style={container}>
-      <Scroller items={HOURS} ref={hoursRef} setItemIndex={setHoursIndex} />
+      <Scroller items={HOURS} onChange={hoursChangeHandler} />
       <Image source={require('../../assets/dot.png')} style={image} />
 
-      <Scroller items={MINUTES} ref={minsRef} setItemIndex={setMinsIndex} />
+      <Scroller items={MINUTES} onChange={minsChangeHandler} />
       <View pointerEvents="none" style={picker} />
     </View>
   );
@@ -43,7 +47,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#909cc6',
     height: 100,
-    width: 253,
-    borderRadius: 20,
+    width: '100%',
+    borderRadius: 25,
   },
 });

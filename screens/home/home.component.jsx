@@ -1,14 +1,24 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { AddTaskButton } from '../../components/addTask/addTask.component';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import { BackgroundImage } from '../../components/bg-image/bg-image.component';
+import { AddTask } from '../../components/addtask/addtask.component';
 
 import Calendar from '../../components/calendar/calendar.component';
-import CreateTask from '../../components/createtask/createtask.component';
+import CreateTaskModal from '../../components/createtaskmodal/createtaskmodal.component';
+import { TaskItem } from '../../components/task-item/task-item.component';
 
 const Home = () => {
   const [modal, setModal] = useState(false);
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (title, note, hour, mins) => {
+    setTasks((prevState) => {
+      return [
+        { key: Math.random().toString(), title: title, note: note, hour: hour, mins: mins },
+        ...prevState,
+      ];
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -26,9 +36,10 @@ const Home = () => {
         Let's find something todo...
       </Text>
       <Calendar />
-      <BackgroundImage />
-      <CreateTask modal={modal} setModal={setModal} />
-      <AddTaskButton setModal={setModal} modal={modal} />
+
+      <AddTask setModal={setModal} modal={modal} tasks={tasks} />
+
+      <CreateTaskModal modal={modal} setModal={setModal} addTask={addTask} />
     </View>
   );
 };

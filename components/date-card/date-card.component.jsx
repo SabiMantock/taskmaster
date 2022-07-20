@@ -2,14 +2,20 @@ import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const DateCard = ({ dates }) => {
+const DateCard = ({ dates, index }) => {
+  const { container, content, day, month, weekday } = styles;
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.day}>{dates.day}</Text>
-        <Text style={styles.month}>{dates.month}</Text>
-        <Image source={require('../../assets/v-line.png')} style={{ height: 27 }} />
-        <Text style={styles.weekday}>{dates.weekday}</Text>
+    <View style={container(index)}>
+      <View style={content}>
+        <Text style={day(index)}>{dates.day}</Text>
+        <Text style={month(index)}>{dates.month}</Text>
+
+        {index === 1 ? (
+          <Image source={require('../../assets/v-line-white.png')} style={{ height: 27 }} />
+        ) : (
+          <Image source={require('../../assets/v-line.png')} style={{ height: 27 }} />
+        )}
+        <Text style={weekday(index)}>{dates.weekday}</Text>
       </View>
     </View>
   );
@@ -18,36 +24,35 @@ const DateCard = ({ dates }) => {
 export default DateCard;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: width / 5,
-    borderRadius: 20,
-    borderWidth: 5,
-    height: 130,
-    borderColor: '#647AFE',
-    backgroundColor: '#a4b0ff',
-    opacity: 0.68,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
+  container: (index) => {
+    return {
+      flex: 1,
+      width: width / 2,
+      borderRadius: 25,
+      borderWidth: 5,
+      height: 150,
+      borderColor: index === 1 ? '#01D9F7' : 'rgb(100, 122, 254)',
+      backgroundColor: index === 1 ? '#01D9F7' : 'rgb(164, 176, 255)',
+      opacity: 0.68,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginHorizontal: 5,
+    };
   },
   content: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  day: {
-    fontSize: 25,
-    fontWeight: '400',
+  day: (index) => {
+    return {
+      fontSize: 25,
+      color: index === 1 ? '#fff' : '#707070',
+    };
   },
-  month: {
-    fontSize: 16,
-    textTransform: 'uppercase',
-    fontWeight: '400',
-    lineHeight: 27,
+  month: (index) => {
+    return { fontSize: 14, textTransform: 'uppercase', color: index === 1 ? '#fff' : '#707070' };
   },
-  weekday: {
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 27,
+  weekday: (index) => {
+    return { fontSize: 14, color: index === 1 ? '#fff' : '#707070', textTransform: 'uppercase' };
   },
 });
