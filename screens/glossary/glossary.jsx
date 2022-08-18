@@ -1,37 +1,41 @@
 import { useState } from 'react';
-import { View } from 'react-native';
-import DraggableFlatList from 'react-native-draggable-flatlist';
-import CreateTaskModal from '../../components/createtaskmodal/createtaskmodal.component';
-import { DoubleScroller } from '../../components/double-scroller/double-scroller.component';
-import { ModalTitleText } from '../../components/modal-titleText/modal-titleText.component';
-import { Scroller } from '../../components/scroller/scroller.component';
-import { SetDurationButton } from '../../components/set-duration/set-duration.component';
-import { TaskItem } from '../../components/task-item/task-item.component';
-import TimePicker from '../../components/time-picker/time-picker.component';
-import { TimeText } from '../../components/time-text/time-text.component';
-import { data, HOURS, MINUTES } from '../../data';
-import Home from '../home/home.component';
+import { ScrollView } from 'react-native';
+import { CountDownAnimation } from '../../components/animation/countdown-animation';
+import Calendar from '../../components/calendar/calendar';
+import DateCard from '../../components/calendar/date-card';
+import { CountDown } from '../../components/countdown/countdown';
+import CreateTaskModal from '../../components/modal/createtaskmodal/create-task-modal';
+import { Duration } from '../../components/modal/session-modal/duration-timer';
+import { SessionModal } from '../../components/modal/session-modal/session-modal';
+import TimePickerModal from '../../components/modal/timepickermodal/time-picker-modal';
+import { SessionProgress } from '../../components/session-progress/session-progress';
+import { AddTasks } from '../../components/tasks/add-task';
+import { TaskItem } from '../../components/tasks/task-item';
+import { Tasks } from '../../components/tasks/tasks';
+import { data } from '../../data';
 
 export const Glossary = () => {
-  const [taskData, setTaskData] = useState(data);
-
-  // return <TimePicker />;
-  // return <Scroller items={HOURS} />;
-  // return <DoubleScroller />;
-  // return <ModalTitleText />;
-  // return <TimeText />;
-  // return <SetDurationButton />;
-  // return <CreateTask />;
-  // return <Home />;
+  const [createTaskModal, setCreateTaskModal] = useState(false);
+  const [sessionModal, setSessionModal] = useState(false);
   return (
-    <>
-      <DraggableFlatList
-        data={taskData}
-        keyExtractor={(item) => item.key}
-        renderItem={TaskItem}
-        onDragEnd={({ data }) => setTaskData(data)}
-        style={{ marginVertical: 100 }}
+    <ScrollView>
+      <DateCard dates={{ day: '13', month: 'APR', weekday: 'TUE' }} />
+      <Calendar />
+      <TaskItem item={data} />
+      <AddTasks
+        createTaskModal={createTaskModal}
+        setCreateTaskModal={setCreateTaskModal}
+        sessionModal={sessionModal}
+        setSessionModal={setSessionModal}
       />
-    </>
+      <CreateTaskModal createTaskModal={createTaskModal} setCreateTaskModal={setCreateTaskModal} />
+      {/* <TimePickerModal /> */}
+      <SessionModal sessionModal={sessionModal} setSessionModal={setSessionModal} />
+      <SessionProgress />
+      <Duration />
+      <CountDownAnimation />
+      <CountDown />
+      <Tasks />
+    </ScrollView>
   );
 };

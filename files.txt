@@ -1,0 +1,30 @@
+ const { container, modalContainer, modalText } = styles;
+
+  const onChange = (val) => console.warn(val);
+
+  const handleHoursChange = (val) => {
+    setHoursIndex(val);
+
+    onChange({
+      hour: val,
+      min: minsIndex,
+    });
+  };
+
+  const handleMinsChange = (val) => {
+    setMinsIndex(val);
+
+    onChange({
+      hour: hoursIndex,
+      min: val,
+    });
+  };
+
+  const setDuration = () => {
+    setHour(hoursIndex);
+    setMins(minsIndex);
+  };
+
+  const onClose = () => {
+    setModal(false);
+  };
